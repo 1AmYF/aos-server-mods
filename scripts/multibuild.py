@@ -167,7 +167,11 @@ def apply_script(protocol, connection, config):
             return connection.on_block_build(self, x, y, z)
 
         def on_line_build(self, points):
-            if self.is_multibuilding:
+            if self.is_registering:
+                for point in points:
+                    self.startingblocks.append((point[0], point[1], point[2],
+                                               get_direction(self)))
+            elif self.is_multibuilding:
                 delay = 0
                 for point in points:
                     callLater(delay, rollout_multiblocks, self, point)
