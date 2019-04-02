@@ -27,6 +27,10 @@ from pyspades.server import block_action
 from pyspades.common import make_color
 from commands import add, admin, alias
 from math import atan2, pi
+from twisted.internet.reactor import callLater
+
+
+BUILD_DELAY = 0.04
 
 
 @admin
@@ -75,9 +79,9 @@ def build_block(connection, x, y, z, color):
         return
     set_color = SetColor()
     set_color.value = make_color(*color)
-    set_color.player_id = connection.player_id
+    set_color.player_id = 32
     connection.protocol.send_contained(set_color)
-    block_action.player_id = connection.player_id
+    block_action.player_id = 32
     block_action.x = x
     block_action.y = y
     block_action.z = z
@@ -127,42 +131,50 @@ def get_multiblock_diff(self, regblock, xyz_new):
     return (x, y, z)
 
 
+def rollout_multiblocks(self, coord, destroy=False):
+    delay = 0
+    first = True
+    for regblock in reversed(self.startingblocks):
+        if first:
+            first = False
+            continue
+        block_diff = get_multiblock_diff(self, regblock, coord)
+        mb_x = regblock[0] + block_diff[0]
+        mb_y = regblock[1] + block_diff[1]
+        mb_z = regblock[2] + block_diff[2]
+        if destroy:
+            callLater(delay, destroy_block, self, mb_x, mb_y, mb_z)
+        else:
+            callLater(delay, build_block, self, mb_x, mb_y, mb_z, self.color)
+        delay += BUILD_DELAY
+
+
 def apply_script(protocol, connection, config):
     class MultibuildConnection(connection):
         is_registering = False
         is_multibuilding = False
         ignore_direction = False
-        # x, y, z, direction (3 = north, 0 = east, 1 = south, 2 = west)
+        # x, y, z, direction (0 = east, 1 = south, 2 = west, 3 = north)
         startingblocks = []
 
-        def on_block_build_attempt(self, x, y, z):
+        def on_block_build(self, x, y, z):
             if self.is_registering:
                 self.startingblocks.append((x, y, z, get_direction(self)))
             elif self.is_multibuilding:
-                for regblock in self.startingblocks:
-                    block_diff = get_multiblock_diff(self, regblock, (x, y, z))
-                    build_block(self,
-                                regblock[0] + block_diff[0],
-                                regblock[1] + block_diff[1],
-                                regblock[2] + block_diff[2], self.color)
+                rollout_multiblocks(self, (x, y, z))
                 if self.god:
                     self.refill()
-                return False
-            return connection.on_block_build_attempt(self, x, y, z)
+            return connection.on_block_build(self, x, y, z)
 
-        def on_line_build_attempt(self, points):
+        def on_line_build(self, points):
             if self.is_multibuilding:
+                delay = 0
                 for point in points:
-                    for regblock in self.startingblocks:
-                        block_diff = get_multiblock_diff(self, regblock, point)
-                        build_block(self,
-                                    regblock[0] + block_diff[0],
-                                    regblock[1] + block_diff[1],
-                                    regblock[2] + block_diff[2], self.color)
+                    callLater(delay, rollout_multiblocks, self, point)
+                    delay += BUILD_DELAY
                 if self.god:
                     self.refill()
-                return False
-            return connection.on_line_build_attempt(self, points)
+            return connection.on_line_build(self, points)
 
         def on_block_destroy(self, x, y, z, value):
             if self.is_registering or self.is_multibuilding:
@@ -183,13 +195,7 @@ def apply_script(protocol, connection, config):
                             self.startingblocks = newstartingblocks
                     elif self.is_multibuilding:
                         for block in blocks:
-                            for regblock in self.startingblocks:
-                                block_diff = get_multiblock_diff(self, regblock, block)
-                                destroy_block(self,
-                                              regblock[0] + block_diff[0],
-                                              regblock[1] + block_diff[1],
-                                              regblock[2] + block_diff[2])
-                        return False
+                            rollout_multiblocks(self, block, destroy=True)
             return connection.on_block_destroy(self, x, y, z, value)
 
     return protocol, MultibuildConnection
