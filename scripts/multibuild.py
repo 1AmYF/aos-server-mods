@@ -11,8 +11,10 @@ Step 2: Type /mb to start multibuilding. Important: Start building
 exactly at the last starting block you placed during step 1.
 
 During the use of /mbreg, your orientation (= in which direction
-you look) will matter for the multibuild, as the building will be
-mirrored accordingly. Type /mbdir to disable this.
+you look) is stored in case you want to mirror your multibuild
+accordingly. You can enable 2 types of mirrors:
+/mbmirror 1 (normal, reversing mirror)
+/mbmirror 2 (non-reversing mirror)
 
 You can toggle /mbreg or /mb all the time if you want to pause the
 feature and build normal again.
@@ -57,17 +59,21 @@ def mb(connection):
 
 
 @admin
-def mbdir(connection):
-    connection.ignore_direction = not connection.ignore_direction
-    if connection.ignore_direction:
-        return "Ignoring direction now."
+def mbmirror(connection, mirror=0):
+    mirror = int(mirror)
+    if mirror < 0 or mirror > 2:
+        raise ValueError()
+    connection.mirror = mirror
+    if mirror == 0:
+        return "Mirror disabled. Type /mbmirror 1 or /mbmirror 2 to enable."
     else:
-        return "No longer ignoring direction."
+        return ("Mirror type set to: %s (%s)" % (str(mirror),
+                "reversing" if mirror == 1 else "non-reversing"))
 
 
 add(mbreg)
 add(mb)
-add(mbdir)
+add(mbmirror)
 
 
 def is_invalid_coord(x, y, z):
@@ -113,10 +119,12 @@ def get_multiblock_diff(self, regblock, xyz_new):
     x = xyz_new[0] - lastregblock[0]
     y = xyz_new[1] - lastregblock[1]
     z = xyz_new[2] - lastregblock[2]
-    if not self.ignore_direction and not lastregblock[3] == regblock[3]:
+    if self.mirror > 0 and not lastregblock[3] == regblock[3]:
         if abs(lastregblock[3] - regblock[3]) == 2:
-            x = x * -1
-            y = y * -1
+            if self.mirror == 2 or not lastregblock[3] % 2:
+                x = x * -1
+            if self.mirror == 2 or lastregblock[3] % 2:
+                y = y * -1
         else:
             tmp_x = x
             x = y
@@ -128,6 +136,12 @@ def get_multiblock_diff(self, regblock, xyz_new):
             if lastregblock[3] > 1:
                 x = x * -1
                 y = y * -1
+            if self.mirror == 1 and (lastregblock[3] == regblock[3] + 1 or
+                                     lastregblock[3] - regblock[3] == -3):
+                if regblock[3] % 2:
+                    x = x * -1
+                else:
+                    y = y * -1
     return (x, y, z)
 
 
@@ -153,7 +167,7 @@ def apply_script(protocol, connection, config):
     class MultibuildConnection(connection):
         is_registering = False
         is_multibuilding = False
-        ignore_direction = False
+        mirror = 0
         # x, y, z, direction (0 = east, 1 = south, 2 = west, 3 = north)
         startingblocks = []
 
