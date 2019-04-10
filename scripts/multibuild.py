@@ -4,23 +4,36 @@ multibuild.py by IAmYourFriend
 How to use:
 
 Step 1: Type /mbreg and start "registering" your starting blocks.
-Place single blocks everywhere where you want your building to
-appear.
+Place blocks everywhere where you want your building to appear.
 
 Step 2: Type /mb to start multibuilding. Important: Start building
 exactly at the last starting block you placed during step 1.
-
-During the use of /mbreg, your orientation (= in which direction
-you look) is stored in case you want to mirror your multibuild
-accordingly. You can enable 2 types of mirrors:
-/mbmirror 1 (normal, reversing mirror)
-/mbmirror 2 (non-reversing mirror)
 
 You can toggle /mbreg or /mb all the time if you want to pause the
 feature and build normal again.
 
 Short video showcasing the feature:
 https://twitter.com/1AmYF/status/1078610014867202048
+
+For more advanced multibuilding:
+
+/mbmirror <1 2>
+  Mirror your multibuild, reversing (1) or non-reversing (2). Mind
+  your orientation (= in which direction you look) during /mbreg
+  as your multibuild will be mirrored accordingly.
+
+/mbshape <ball box diamond land pyramid>
+  Load a prefab shape instead of building your own during /mbreg.
+  Your last starting block will be on the top middle of the shape
+  (optionally adjust starting z by adding a number as argument).
+
+/mbground
+  Prevent destruction of ground blocks when using spade during /mb
+  (optionally a custom z for the protection height can be added as
+  argument).
+
+/mbhelp
+  List all multibuild commands.
 """
 
 from pyspades.constants import *
@@ -28,11 +41,17 @@ from pyspades.contained import BlockAction, SetColor
 from pyspades.server import block_action
 from pyspades.common import make_color
 from commands import add, admin, alias
-from math import atan2, pi
+from math import atan2, pi, sqrt
 from twisted.internet.reactor import callLater
 
 
 BUILD_DELAY = 0.04
+SHAPES = {"ball": 5, "box": 5, "diamond": 4, "land": 6, "pyramid": 5}
+HELP_TEXT = ["/mbreg     Register your starting blocks (required before /mb)",
+             "/mb        Start multibuilding",
+             "/mbmirror  Mirror build (mind your orientation during /mbreg)",
+             "/mbshape   Load a prefab shape instead of using /mbreg",
+             "/mbground  Prevent destruction of ground blocks during /mb"]
 
 
 @admin
@@ -40,7 +59,7 @@ def mbreg(connection):
     connection.is_multibuilding = False
     connection.is_registering = not connection.is_registering
     if connection.is_registering:
-        connection.startingblocks = []
+        connection.regblocks = []
         return "Place your starting blocks now."
     else:
         return "No longer placing starting blocks."
@@ -48,7 +67,7 @@ def mbreg(connection):
 
 @admin
 def mb(connection):
-    if len(connection.startingblocks) < 1:
+    if len(connection.regblocks) < 1:
         return "You haven't placed any starting blocks yet. Use /mbreg"
     connection.is_registering = False
     connection.is_multibuilding = not connection.is_multibuilding
@@ -71,9 +90,89 @@ def mbmirror(connection, mirror=0):
                 "reversing" if mirror == 1 else "non-reversing"))
 
 
+@admin
+def mbshape(connection, shape=None, adjust_z=0):
+    adjust_z = int(adjust_z)
+    if shape is None:
+        shapes = ""
+        for s in SHAPES.keys():
+            shapes += s + " "
+        return "Use this command with a shape name: " + shapes
+    shape = shape.lower()
+    if shape not in SHAPES.keys():
+        return "Unknown shape name."
+    radius = SHAPES[shape]
+    connection.regblocks = []
+    dir = get_direction(connection)
+    add_bottom = shape == "ball" or shape == "box" or shape == "diamond"
+    for x in range(0, radius):
+        for y in range(0, radius):
+            for z in range(0, radius):
+                condition = False
+                if shape == "ball":
+                    condition = (sqrt(pow(x, 3) + pow(y, 3) + pow(z, 3)) <=
+                                 radius - 2)
+                elif shape == "box":
+                    condition = (x <= int(radius / 2) and
+                                 y <= int(radius / 2) and
+                                 z <= int(radius / 2))
+                elif shape == "land":
+                    condition = (sqrt(pow(x, 2) + pow(y, 2) + pow(z, 1.5)) <=
+                                 radius - 2 and z >= int(radius / 2))
+                elif shape == "pyramid" or shape == "diamond":
+                    condition = (x < z and y < z)
+                if condition:
+                    connection.regblocks.append((x, y, z, dir))
+    parts = set()
+    for regblock in connection.regblocks:
+        rx, ry, rz = regblock[0], regblock[1], regblock[2]
+        if shape == "pyramid" or shape == "diamond":
+            rz = rz * -1 + radius
+        parts.add((rx, ry, rz * -1, dir))
+        parts.add((rx, ry * -1, rz * -1, dir))
+        parts.add((rx * -1, ry, rz * -1, dir))
+        parts.add((rx * -1, ry * -1, rz * -1, dir))
+        if add_bottom:
+            if shape == "diamond":
+                rz -= 2
+            parts.add((rx, ry, rz, dir))
+            parts.add((rx, ry * -1, rz, dir))
+            parts.add((rx * -1, ry, rz, dir))
+            parts.add((rx * -1, ry * -1, rz, dir))
+    connection.regblocks = list(parts)
+    starting_z = (-int(radius / 2) if add_bottom and not shape == "diamond"
+                  else -radius + 1)
+    connection.regblocks.append((0, 0, starting_z + adjust_z, dir))
+    return "Shape loaded. Use it now with /mb"
+
+
+@admin
+def mbground(connection, level=None):
+    by_user = False
+    if level is not None:
+        level = int(level)
+        by_user = True
+    else:
+        level = 62
+    if by_user or connection.protect_ground == 99:
+        connection.protect_ground = level
+        return ("Ground protection enabled%s." %
+                (" (above level " + str(level) + ")" if by_user else ""))
+    else:
+        connection.protect_ground = 99
+        return "Ground protection disabled."
+
+
+def mbhelp(connection):
+    connection.send_lines(HELP_TEXT)
+
+
 add(mbreg)
 add(mb)
 add(mbmirror)
+add(mbshape)
+add(mbground)
+add(mbhelp)
 
 
 def is_invalid_coord(x, y, z):
@@ -81,8 +180,6 @@ def is_invalid_coord(x, y, z):
 
 
 def build_block(connection, x, y, z, color):
-    if is_invalid_coord(x, y, z):
-        return
     set_color = SetColor()
     set_color.value = make_color(*color)
     set_color.player_id = 32
@@ -97,8 +194,6 @@ def build_block(connection, x, y, z, color):
 
 
 def destroy_block(connection, x, y, z):
-    if is_invalid_coord(x, y, z):
-        return
     if connection.protocol.map.get_solid(x, y, z):
         block_action.player_id = connection.player_id
         block_action.x = x
@@ -115,7 +210,7 @@ def get_direction(self):
 
 
 def get_multiblock_diff(self, regblock, xyz_new):
-    lastregblock = self.startingblocks[len(self.startingblocks) - 1]
+    lastregblock = self.regblocks[len(self.regblocks) - 1]
     x = xyz_new[0] - lastregblock[0]
     y = xyz_new[1] - lastregblock[1]
     z = xyz_new[2] - lastregblock[2]
@@ -148,7 +243,7 @@ def get_multiblock_diff(self, regblock, xyz_new):
 def rollout_multiblocks(self, coord, destroy=False):
     delay = 0
     first = True
-    for regblock in reversed(self.startingblocks):
+    for regblock in reversed(self.regblocks):
         if first:
             first = False
             continue
@@ -156,24 +251,30 @@ def rollout_multiblocks(self, coord, destroy=False):
         mb_x = regblock[0] + block_diff[0]
         mb_y = regblock[1] + block_diff[1]
         mb_z = regblock[2] + block_diff[2]
-        if destroy:
+        if (is_invalid_coord(mb_x, mb_y, mb_z) or
+           (destroy and mb_z >= self.protect_ground)):
+            continue
+        is_solid = self.protocol.map.get_solid(mb_x, mb_y, mb_z)
+        if destroy and is_solid:
             callLater(delay, destroy_block, self, mb_x, mb_y, mb_z)
-        else:
+            delay += BUILD_DELAY
+        elif not destroy and not is_solid:
             callLater(delay, build_block, self, mb_x, mb_y, mb_z, self.color)
-        delay += BUILD_DELAY
+            delay += BUILD_DELAY
 
 
 def apply_script(protocol, connection, config):
     class MultibuildConnection(connection):
         is_registering = False
         is_multibuilding = False
+        protect_ground = 99
         mirror = 0
         # x, y, z, direction (0 = east, 1 = south, 2 = west, 3 = north)
-        startingblocks = []
+        regblocks = []
 
         def on_block_build(self, x, y, z):
             if self.is_registering:
-                self.startingblocks.append((x, y, z, get_direction(self)))
+                self.regblocks.append((x, y, z, get_direction(self)))
             elif self.is_multibuilding:
                 rollout_multiblocks(self, (x, y, z))
                 if self.god:
@@ -183,8 +284,8 @@ def apply_script(protocol, connection, config):
         def on_line_build(self, points):
             if self.is_registering:
                 for point in points:
-                    self.startingblocks.append((point[0], point[1], point[2],
-                                               get_direction(self)))
+                    self.regblocks.append((point[0], point[1], point[2],
+                                           get_direction(self)))
             elif self.is_multibuilding:
                 delay = 0
                 for point in points:
@@ -204,13 +305,13 @@ def apply_script(protocol, connection, config):
                 if blocks is not None:
                     if self.is_registering:
                         for block in blocks:
-                            newstartingblocks = []
-                            for sblock in self.startingblocks:
-                                if not (block[0] == sblock[0] and
-                                        block[1] == sblock[1] and
-                                        block[2] == sblock[2]):
-                                    newstartingblocks.append(sblock)
-                            self.startingblocks = newstartingblocks
+                            newregblocks = []
+                            for regblock in self.regblocks:
+                                if not (block[0] == regblock[0] and
+                                        block[1] == regblock[1] and
+                                        block[2] == regblock[2]):
+                                    newregblocks.append(regblock)
+                            self.regblocks = newregblocks
                     elif self.is_multibuilding:
                         for block in blocks:
                             rollout_multiblocks(self, block, destroy=True)
