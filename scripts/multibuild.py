@@ -28,9 +28,8 @@ For more advanced multibuilding:
   (optionally adjust starting z by adding a number as argument).
 
 /mbground
-  Prevent destruction of ground blocks when using spade during /mb
-  (optionally a custom z for the protection height can be added as
-  argument).
+  Don't build or destroy on ground level during /mb (optionally
+  add a custom z for the protection height as argument).
 
 /mbhelp
   List all multibuild commands.
@@ -51,7 +50,7 @@ HELP_TEXT = ["/mbreg     Register your starting blocks (required before /mb)",
              "/mb        Start multibuilding",
              "/mbmirror  Mirror build (mind your orientation during /mbreg)",
              "/mbshape   Load a prefab shape instead of using /mbreg",
-             "/mbground  Prevent destruction of ground blocks during /mb"]
+             "/mbground  Don't build or destroy on ground level during /mb"]
 
 
 @admin
@@ -200,7 +199,10 @@ def destroy_block(connection, x, y, z):
         block_action.y = y
         block_action.z = z
         block_action.value = DESTROY_BLOCK
-        connection.protocol.map.destroy_point(x, y, z)
+        if z == 62:
+            connection.protocol.map.remove_point(x, y, z)
+        else:
+            connection.protocol.map.destroy_point(x, y, z)
         connection.protocol.send_contained(block_action, save=True)
 
 
@@ -214,26 +216,28 @@ def get_multiblock_diff(self, regblock, xyz_new):
     x = xyz_new[0] - lastregblock[0]
     y = xyz_new[1] - lastregblock[1]
     z = xyz_new[2] - lastregblock[2]
-    if self.mirror > 0 and not lastregblock[3] == regblock[3]:
-        if abs(lastregblock[3] - regblock[3]) == 2:
-            if self.mirror == 2 or not lastregblock[3] % 2:
+    ori = regblock[3]
+    lastori = lastregblock[3]
+    if self.mirror > 0 and not lastori == ori:
+        if abs(lastori - ori) == 2:
+            if self.mirror == 2 or not lastori % 2:
                 x = x * -1
-            if self.mirror == 2 or lastregblock[3] % 2:
+            if self.mirror == 2 or lastori % 2:
                 y = y * -1
         else:
             tmp_x = x
             x = y
             y = tmp_x
-            if regblock[3] == 1 or regblock[3] == 2:
+            if ori == 1 or ori == 2:
                 x = x * -1
             else:
                 y = y * -1
-            if lastregblock[3] > 1:
+            if lastori > 1:
                 x = x * -1
                 y = y * -1
-            if self.mirror == 1 and (lastregblock[3] == regblock[3] + 1 or
-                                     lastregblock[3] - regblock[3] == -3):
-                if regblock[3] % 2:
+            if self.mirror == 1 and (lastori == ori + 1 or
+                                     lastori - ori == -3):
+                if ori % 2:
                     x = x * -1
                 else:
                     y = y * -1
@@ -251,8 +255,7 @@ def rollout_multiblocks(self, coord, destroy=False):
         mb_x = regblock[0] + block_diff[0]
         mb_y = regblock[1] + block_diff[1]
         mb_z = regblock[2] + block_diff[2]
-        if (is_invalid_coord(mb_x, mb_y, mb_z) or
-           (destroy and mb_z >= self.protect_ground)):
+        if is_invalid_coord(mb_x, mb_y, mb_z) or mb_z >= self.protect_ground:
             continue
         is_solid = self.protocol.map.get_solid(mb_x, mb_y, mb_z)
         if destroy and is_solid:
