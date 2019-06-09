@@ -299,16 +299,15 @@ def apply_script(protocol, connection, config):
             return connection.on_line_build(self, points)
 
         def on_block_removed(self, x, y, z):
-            if self.is_registering or self.is_multibuilding:
-                if self.is_registering:
-                    newregblocks = []
-                    for regblock in self.regblocks:
-                        if not (x == regblock[0] and y == regblock[1] and
-                                z == regblock[2]):
-                            newregblocks.append(regblock)
-                    self.regblocks = newregblocks
-                elif self.is_multibuilding:
-                    rollout_multiblocks(self, (x, y, z), destroy=True)
+            if self.is_registering:
+                newregblocks = []
+                for regblock in self.regblocks:
+                    if not (x == regblock[0] and y == regblock[1] and
+                            z == regblock[2]):
+                        newregblocks.append(regblock)
+                self.regblocks = newregblocks
+            elif self.is_multibuilding:
+                rollout_multiblocks(self, (x, y, z), destroy=True)
             return connection.on_block_removed(self, x, y, z)
 
     return protocol, MultibuildConnection
