@@ -298,26 +298,17 @@ def apply_script(protocol, connection, config):
                     self.refill()
             return connection.on_line_build(self, points)
 
-        def on_block_destroy(self, x, y, z, value):
+        def on_block_removed(self, x, y, z):
             if self.is_registering or self.is_multibuilding:
-                blocks = None
-                if value == DESTROY_BLOCK:
-                    blocks = ((x, y, z),)
-                elif value == SPADE_DESTROY:
-                    blocks = ((x, y, z), (x, y, z + 1), (x, y, z - 1))
-                if blocks is not None:
-                    if self.is_registering:
-                        for block in blocks:
-                            newregblocks = []
-                            for regblock in self.regblocks:
-                                if not (block[0] == regblock[0] and
-                                        block[1] == regblock[1] and
-                                        block[2] == regblock[2]):
-                                    newregblocks.append(regblock)
-                            self.regblocks = newregblocks
-                    elif self.is_multibuilding:
-                        for block in blocks:
-                            rollout_multiblocks(self, block, destroy=True)
-            return connection.on_block_destroy(self, x, y, z, value)
+                if self.is_registering:
+                    newregblocks = []
+                    for regblock in self.regblocks:
+                        if not (x == regblock[0] and y == regblock[1] and
+                                z == regblock[2]):
+                            newregblocks.append(regblock)
+                    self.regblocks = newregblocks
+                elif self.is_multibuilding:
+                    rollout_multiblocks(self, (x, y, z), destroy=True)
+            return connection.on_block_removed(self, x, y, z)
 
     return protocol, MultibuildConnection
