@@ -1,5 +1,5 @@
 """
-multibuild.py by IAmYourFriend
+multibuild.py by IAmYourFriend https://twitter.com/1AmYF
 
 How to use:
 
@@ -12,8 +12,9 @@ exactly at the last starting block you placed during step 1.
 You can toggle /mbreg or /mb all the time if you want to pause the
 feature and build normal again.
 
-Short video showcasing the feature:
+Short videos showcasing the feature:
 https://twitter.com/1AmYF/status/1078610014867202048
+https://twitter.com/1AmYF/status/1136228253977448448
 
 For more advanced multibuilding:
 

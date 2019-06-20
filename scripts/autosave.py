@@ -1,5 +1,5 @@
 """
-autosave.py by IAmYourFriend
+autosave.py by IAmYourFriend https://twitter.com/1AmYF
 
 Intended for build servers. Automatically creates backups of the
 current map in a given interval and also removes older saves. Saving
