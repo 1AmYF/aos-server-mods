@@ -1,0 +1,17 @@
+name = 'Icebergs'
+version = '3.0'
+author = 'IAmYourFriend'
+description = ('Push map on icebergs.')
+#fog = (0, 60, 100)
+
+extensions = {
+'push': True,
+'push_spawn_range' : 5,
+'push_blue_spawn' : (192, 376, 1),
+'push_blue_cp' : (210, 124, 1),
+'push_blue_build_area' : (150, 145, 240, 400),
+'push_green_spawn' : (325, 378, 1),
+'push_green_cp' : (305, 124, 1),
+'push_green_build_area' : (280, 145, 355, 400),
+'water_damage' : 100
+}

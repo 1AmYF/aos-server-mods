@@ -1,0 +1,17 @@
+name = 'Helgoland'
+version = '1.1'
+author = 'IAmYourFriend'
+description = ('Push map based on the coast of the island Helgoland in the North Sea.')
+fog = (157, 234, 254)
+
+extensions = {
+'push': True,
+'push_spawn_range' : 4,
+'push_blue_spawn' : (188, 382, 45),
+'push_blue_cp' : (165, 106, 13),
+'push_blue_build_area' : (172, 140, 216, 402),
+'push_green_spawn' : (293, 383, 45),
+'push_green_cp' : (323, 106, 13),
+'push_green_build_area' : (266, 145, 309, 408),
+'water_damage' : 100
+}

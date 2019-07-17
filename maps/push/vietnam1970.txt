@@ -1,0 +1,16 @@
+name = 'Vietnam 1970'
+version = '1.0'
+author = 'IAmYourFriend'
+description = ('A map based on the Vietnam War for the Push Gamemode.')
+
+extensions = {
+'push': True,
+'push_spawn_range' : 15,
+'push_blue_spawn' : (209, 490, 1),
+'push_blue_cp' : (270, 26, 55),
+'push_blue_build_area' : (129, 71, 251, 511),
+'push_green_spawn' : (302, 490, 1),
+'push_green_cp' : (241, 26, 55),
+'push_green_build_area' : (260, 71, 382, 511),
+'water_damage' : 100
+}

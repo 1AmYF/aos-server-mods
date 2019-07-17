@@ -1,0 +1,16 @@
+name = 'Froot Loops'
+version = '1.0'
+author = 'IAmYourFriend'
+description = ('Fighting over a breakfast bowl.')
+
+extensions = {
+'push': True,
+'push_spawn_range' : 5,
+'push_blue_spawn' : (200, 400, 1),
+'push_blue_cp' : (249, 139, 1),
+'push_blue_build_area' : (170, 137, 236, 497),
+'push_green_spawn' : (307, 400, 1),
+'push_green_cp' : (256, 139, 1),
+'push_green_build_area' : (270, 137, 337, 497),
+'water_damage' : 100
+}

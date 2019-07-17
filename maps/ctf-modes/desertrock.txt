@@ -1,0 +1,9 @@
+name = 'Desert Rock'
+version = '1.0'
+author = 'IAmYourFriend'
+description = ('Based on the atomic bomb testing in Nevada at Camp Desert Rock in the 1950s.')
+
+# Add boundary damage for players trying to pass the fence.
+#extensions = { 
+#'boundary_damage' : {'left' : 0, 'right' : 512, 'top' : 126, 'bottom' : 385, 'damage': 5}
+#}
