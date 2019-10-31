@@ -1,0 +1,35 @@
+name = 'UFO Crash'
+version = '1.0'
+author = 'Builders on *Sauerkraut'
+description = ('Visit http://sauerkraut.bplaced.net for more information.')
+
+#extensions = {
+#'water_damage' : 5
+#}
+
+import random
+from pyspades.constants import *
+# Intel and base locations
+def get_entity_location(team, entity_id):
+    if entity_id == BLUE_FLAG:
+        x = random.randrange(97, 158)
+        y = random.randrange(129, 190)
+        return (x, y, 1)
+    if entity_id == GREEN_FLAG:
+        x = random.randrange(353, 414)
+        y = random.randrange(321, 382)
+        return (x, y, 1)
+    if entity_id == BLUE_BASE:
+        return (101, 160, 1)
+    if entity_id == GREEN_BASE:
+        return (410, 351, 1)
+# Player spawn locations
+def get_spawn_location(connection):
+    x = y = 0
+    if connection.team is connection.protocol.blue_team:
+        x = random.randrange(97, 158)
+        y = random.randrange(129, 190)
+    if connection.team is connection.protocol.green_team:
+        x = random.randrange(353, 414)
+        y = random.randrange(321, 382)
+    return x, y, connection.protocol.map.get_z(x, y)
