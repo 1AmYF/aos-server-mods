@@ -15,13 +15,12 @@ def apply_script(protocol, connection, config):
             z = 0
 
         def on_block_destroy(self, x, y, z, value):
-            if self.tool is WEAPON_TOOL:
-                self.blockposition.x = x
-                self.blockposition.y = y
-                self.blockposition.z = z
-                distance = int(distance_3d_vector(self.world_object.position,
-                                                  self.blockposition))
-                if distance >= MAX_BLOCK_SHOOT_DISTANCE:
-                    return False
+            self.blockposition.x = x
+            self.blockposition.y = y
+            self.blockposition.z = z
+            distance = int(distance_3d_vector(self.world_object.position,
+                                              self.blockposition))
+            if distance >= MAX_BLOCK_SHOOT_DISTANCE:
+                return False
             return connection.on_block_destroy(self, x, y, z, value)
     return protocol, FogBlockConnection
