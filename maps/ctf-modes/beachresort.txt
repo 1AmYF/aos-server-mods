@@ -10,7 +10,6 @@ description = ('Visit http://sauerkraut.bplaced.net for more information.')
 
 # Enable this to optimize spawn locations.
 import random
-from random import randrange
 def get_spawn_location(connection):
     if connection.team is connection.protocol.blue_team:
         blue_spawns_x_y = [(4, 202), (26, 213), (29, 235), (19, 254), (32, 272), (11, 305), (35, 303), (28, 193)]
@@ -18,6 +17,6 @@ def get_spawn_location(connection):
     if connection.team is connection.protocol.green_team:
         green_spawns_x_y = [(497, 312), (474, 317), (479, 298), (483, 284), (480, 264), (503, 252), (500, 206), (462, 222)]
         x, y = random.choice(green_spawns_x_y)
-    x += randrange(-3, 3)
-    y += randrange(-3, 3)
+    x += random.randrange(-3, 3)
+    y += random.randrange(-3, 3)
     return x, y, connection.protocol.map.get_z(x, y)

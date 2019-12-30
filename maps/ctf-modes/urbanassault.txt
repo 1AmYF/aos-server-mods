@@ -10,7 +10,6 @@ description = ('More about the map in this https://youtu.be/AhFGG4_Ipjw video.')
 
 # Enable this to prevent players from spawning on top of the buildings
 #import random
-#from random import randrange
 #def get_spawn_location(connection):
 #    if connection.team is connection.protocol.blue_team:
 #        blue_spawns_x_y = [(9, 256), (21, 246), (26, 229), (42, 256), (30, 285), (14, 271), (62, 280)]
@@ -18,6 +17,6 @@ description = ('More about the map in this https://youtu.be/AhFGG4_Ipjw video.')
 #    if connection.team is connection.protocol.green_team:
 #        green_spawns_x_y = [(498, 256), (457, 279), (464, 256), (471, 226), (505, 237), (503, 286), (450, 232)]
 #        x, y = random.choice(green_spawns_x_y)
-#    x += randrange(-3, 3)
-#    y += randrange(-3, 3)
+#    x += random.randrange(-3, 3)
+#    y += random.randrange(-3, 3)
 #    return x, y, connection.protocol.map.get_z(x, y)
