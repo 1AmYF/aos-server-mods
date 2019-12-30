@@ -6,7 +6,6 @@ extensions = { 'water_damage' : 10 }
 
 # The following code is for optimizing the spawn locations.
 import random
-from random import randrange
 def get_spawn_location(connection):
     if connection.team is connection.protocol.blue_team:
         blue_spawns_x_y = [(31, 257), (39, 252), (49, 236), (61, 227), (66, 216), (79, 222), (91, 231)]
@@ -14,6 +13,6 @@ def get_spawn_location(connection):
     if connection.team is connection.protocol.green_team:
         green_spawns_x_y = [(474, 232), (458, 236), (449, 219), (435, 220), (431, 229), (423, 220), (414, 231)]
         x, y = random.choice(green_spawns_x_y)
-    x += randrange(-4, 4)
-    y += randrange(-4, 4)
+    x += random.randrange(-4, 4)
+    y += random.randrange(-4, 4)
     return x, y, connection.protocol.map.get_z(x, y)
