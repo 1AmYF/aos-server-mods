@@ -12,23 +12,29 @@ How to setup new maps:
     Spawn and CP locations must be configured via extensions in the map's
     map_name.txt metadata. Example:
 
-extensions = {
-    'push': True,
-    'push_spawn_range' : 5,
-    'push_blue_spawn' : (91, 276, 59),
-    'push_blue_cp' : (91, 276, 59),
-    'push_green_spawn' : (78, 86, 59),
-    'push_green_cp' : (78, 86, 59),
-    'water_damage' : 100
-}
+    extensions = {
+        'push': True,
+        'push_spawn_range' : 5,
+        'push_blue_spawn' : (91, 276, 59),
+        'push_blue_cp' : (91, 276, 59),
+        'push_green_spawn' : (78, 86, 59),
+        'push_green_cp' : (78, 86, 59),
+        'water_damage' : 100
+    }
 
-Additional (but optional) extensions, to mark each teams build area and prevent
-the enemy from building there (and thereby helping the enemy). The build area
-is defined by x and y of upper left corner, followed by x and y of bottom right
-corner on the map. Example:
+    Additional (but optional) extensions, to mark each team's build area and
+    prevent the enemy from building there (and thereby helping the enemy).
+    The build area is defined by x and y of upper left corner, followed by x
+    and y of bottom right corner on the map. Example:
 
-    'push_blue_build_area' : (64, 100, 243, 500),
-    'push_green_build_area' : (268, 100, 447, 500),
+        'push_blue_build_area' : (64, 100, 243, 500),
+        'push_green_build_area' : (268, 100, 447, 500),
+
+Commands:
+    /r
+        Quickly respawn to refill blocks and ammo (if enabled)
+    /resetintel <team>
+        Manually reset the blue or green team's intel
 """
 
 from pyspades.constants import *
@@ -42,8 +48,7 @@ import time
 
 # Disallow removal of map blocks. This allows a larger variety of maps that
 # rely on more fragile structures. It also prevents griefing (like removing
-# the map blocks before and after your teams bridge). Using server setting
-# 'user_blocks_only' instead doesn't work reliable.
+# the map blocks before and after your team's bridge).
 PROTECT_MAP_BLOCKS = True
 
 # Allow the usage of /r to quickly respawn. As players can't refill blocks at

@@ -1,22 +1,36 @@
 """
 multibuild.py by IAmYourFriend https://twitter.com/1AmYF
 
-How to use:
+multibuild.py is an ingame mapping tool. It allows building at
+multiple locations simultaneously, or using shapes (prefabs or
+self-built shapes).
 
-Step 1: Type /mbreg and start "registering" your starting blocks.
-Place blocks everywhere where you want your building to appear.
+Short videos showcasing the feature:
+  https://twitter.com/1AmYF/status/1078610014867202048
+  https://twitter.com/1AmYF/status/1136228253977448448
 
-Step 2: Type /mb to start multibuilding. Important: Start building
-exactly at the last starting block you placed during step 1.
+Usage example:
+
+Step 1:
+  Type /mbreg and start "registering" your starting blocks.
+  Place blocks everywhere where you want your building to appear
+  (If you want to build with a prefab shape instead, choose one
+  using the /mbshape command).
+
+Step 2:
+  Type /mb to start multibuilding. Then place blocks, linebuild or
+  destroy blocks at the last starting block you placed during step 1.
 
 You can toggle /mbreg or /mb all the time if you want to pause the
 feature and build normal again.
 
-Short videos showcasing the feature:
-https://twitter.com/1AmYF/status/1078610014867202048
-https://twitter.com/1AmYF/status/1136228253977448448
+Commands:
 
-For more advanced multibuilding:
+/mbreg
+  Register your starting blocks.
+
+/mb
+  Start multibuilding.
 
 /mbmirror <1 2>
   Mirror your multibuild, reversing (1) or non-reversing (2). Mind
@@ -40,7 +54,7 @@ from pyspades.constants import *
 from pyspades.contained import BlockAction, SetColor
 from pyspades.server import block_action
 from pyspades.common import make_color
-from commands import add, admin, alias
+from commands import add, admin
 from math import atan2, pi, sqrt
 from twisted.internet.reactor import callLater
 
