@@ -9,13 +9,6 @@ backups of the current map in a given interval and also removes older
 saves. Saving will be skipped if nobody was on the server during the
 interval.
 
-Commands
-^^^^^^^^
-
-* ``/autosave`` Toogle the feature
-* ``/save`` Manually save the map
-* ``/recentsaves`` Show the last 5 saves
-
 Options
 ^^^^^^^
 
@@ -36,6 +29,13 @@ Options
 
     # Date format for the map filename.
     date_format = "%Y%m%d-%H%M"
+
+Commands
+^^^^^^^^
+
+* ``/autosave`` Toogle the feature
+* ``/save`` Manually save the map
+* ``/recentsaves`` Show the last 5 saves
 """
 
 import os
@@ -43,7 +43,7 @@ import fnmatch
 from time import time, strftime, localtime
 from twisted.internet.task import LoopingCall
 from twisted.internet.reactor import callLater
-from piqueserver.commands import command, admin
+from piqueserver.commands import command
 from piqueserver.config import config, cast_duration
 
 AUTOSAVE_CONFIG = config.section("autosave")
@@ -79,7 +79,7 @@ def save(connection):
 
 
 def get_map_dir():
-    return os.path.join(config.config_dir, 'maps')
+    return os.path.join(config.config_dir, "maps")
 
 
 @command(admin_only=True)
@@ -88,7 +88,7 @@ def recentsaves(connection):
     Show the last 5 saves
     /recentsaves
     """
-    responsestr = ''
+    responsestr = ""
     filelist = connection.protocol.get_maps_list()
     if filelist is None or len(filelist) < 1:
         return "No saves yet."
@@ -97,8 +97,8 @@ def recentsaves(connection):
         for f in filelist[len(filelist) - 5:]:
             if SAVE_TO_FOLDER.get():
                 responsestr += (connection.protocol.map_info.rot_info.name +
-                                MAP_FOLDER_SUFFIX.get() + '/')
-            responsestr += f + ' '
+                                MAP_FOLDER_SUFFIX.get() + "/")
+            responsestr += f + " "
     return responsestr
 
 
@@ -128,15 +128,15 @@ def apply_script(protocol, connection, config):
             return joined
 
         def write_map_file(self):
-            newfile = '{0}.{1}.vxl'.format(self.map_info.rot_info.name,
+            newfile = "{0}.{1}.vxl".format(self.map_info.rot_info.name,
                                            strftime(DATE_FORMAT.get(), localtime()))
-            open(os.path.join(self.get_map_path(), newfile), 'wb').write(self.map.generate())
+            open(os.path.join(self.get_map_path(), newfile), "wb").write(self.map.generate())
             if DELETE_AFTER.get() > 0:
                 self.delete_old_maps()
 
         def get_maps_list(self):
             return fnmatch.filter(os.listdir(self.get_map_path()),
-                                  self.map_info.rot_info.name + '.*.vxl')
+                                  self.map_info.rot_info.name + ".*.vxl")
 
         def delete_old_maps(self):
             for f in self.get_maps_list():

@@ -51,7 +51,7 @@ def autosave(connection):
 
 @admin
 def recentsaves(connection):
-    responsestr = ''
+    responsestr = ""
     filelist = connection.protocol.get_maps_list()
     if filelist is None or len(filelist) < 1:
         return "No saves yet."
@@ -60,8 +60,8 @@ def recentsaves(connection):
         for f in filelist[len(filelist) - 5:]:
             if SAVE_TO_FOLDER:
                 responsestr += (connection.protocol.map_info.rot_info.name +
-                                MAP_FOLDER_SUFFIX + '/')
-            responsestr += f + ' '
+                                MAP_FOLDER_SUFFIX + "/")
+            responsestr += f + " "
     return responsestr
 
 
@@ -87,7 +87,7 @@ def apply_script(protocol, connection, config):
                 self.activity = len(self.players) > 0
 
         def get_map_path(self):
-            joined = os.path.join(os.getcwd(), 'maps')
+            joined = os.path.join(os.getcwd(), "maps")
             if SAVE_TO_FOLDER:
                 newdir = self.map_info.rot_info.name + MAP_FOLDER_SUFFIX
                 joined = os.path.join(joined, newdir)
@@ -96,15 +96,15 @@ def apply_script(protocol, connection, config):
             return joined
 
         def write_map_file(self):
-            newfile = '{0}.{1}.vxl'.format(self.map_info.rot_info.name,
+            newfile = "{0}.{1}.vxl".format(self.map_info.rot_info.name,
                                            strftime(DATE_FORMAT, localtime()))
-            open(os.path.join(self.get_map_path(), newfile), 'wb').write(self.map.generate())
+            open(os.path.join(self.get_map_path(), newfile), "wb").write(self.map.generate())
             if DELETE_AFTER_DAYS:
                 self.delete_old_maps()
 
         def get_maps_list(self):
             return fnmatch.filter(os.listdir(self.get_map_path()),
-                                  self.map_info.rot_info.name + '.*.vxl')
+                                  self.map_info.rot_info.name + ".*.vxl")
 
         def delete_old_maps(self):
             for f in self.get_maps_list():
