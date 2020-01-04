@@ -10,7 +10,7 @@ with a staff role. Two commands allow tracking of block activity.
 
 The warnings depend on the gamemode:
     - CTF or any other normal gamemode: reports removal of team blocks
-    - Build: Reports removal of both team and map blocks
+    - Build: reports removal of both team and map blocks
     - Push: reports block spam at spawn, pillar spam (= blocking path),
       breaking blocks while on enemy side (= maybe teleport/other glitch)
 

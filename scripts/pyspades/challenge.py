@@ -109,7 +109,7 @@ def challenge(connection):
         if connection.protocol.default_time_limit and connection.protocol.advance_call is not None:
             remaining = (connection.protocol.advance_call.getTime() - reactor.seconds()) / 60
             if remaining < CHALLENGE_DURATION:
-                connection.protocol.set_time_limit(CHALLENGE_DURATION - remaining + 1, True)
+                connection.protocol.set_time_limit(CHALLENGE_DURATION + 1)
         msg = "%s started the %s minutes challenge! To join type /challenge"
         connection.protocol.send_chat(msg % (connection.name, CHALLENGE_DURATION), irc=True)
         return "Get as many kills as possible during the next %s minutes!" % CHALLENGE_DURATION
