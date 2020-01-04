@@ -20,9 +20,9 @@ Setup:
         }
 
     'parkour_start' marks the coordinate for spawn, 'parkour_end' for the base
-    location. If a player dies during the parkour, he will spawn to the closest
-    checkpoint coordinate behind him (the parkour direction needs to be from
-    left to right on the map view).
+    location. 'parkour_checkpoints' is optional. If used, and a player dies during
+    the parkour, he will respawn at the closest checkpoint coordinate behind him
+    (the parkour direction needs to be from left to right on the map view).
 
 Commands:
 
@@ -172,14 +172,15 @@ def apply_script(protocol, connection, config):
         def on_kill(self, killer, type, grenade):
             if self.team is self.protocol.blue_team and not self.isresetting:
                 self.deathcount += 1
-                checkpoints = self.protocol.map_info.extensions["parkour_checkpoints"]
-                i = len(checkpoints)
-                self.reachedcheckpoint = 0
-                for cp in reversed(checkpoints):
-                    if self.world_object.position.x >= cp[0]:
-                        self.reachedcheckpoint = i
-                        break
-                    i -= 1
+                if "parkour_checkpoints" in self.protocol.map_info.extensions:
+                    checkpoints = self.protocol.map_info.extensions["parkour_checkpoints"]
+                    i = len(checkpoints)
+                    self.reachedcheckpoint = 0
+                    for cp in reversed(checkpoints):
+                        if self.world_object.position.x >= cp[0]:
+                            self.reachedcheckpoint = i
+                            break
+                        i -= 1
             return connection.on_kill(self, killer, type, grenade)
 
         def on_refill(self):
@@ -225,5 +226,12 @@ def apply_script(protocol, connection, config):
 
         def on_flag_spawn(self, x, y, z, flag, entity_id):
             return HIDE_COORD
+
+        def on_map_change(self, map):
+            extensions = self.map_info.extensions
+            for must_have in ("parkour_start", "parkour_end"):
+                if must_have not in extensions:
+                    raise Exception("Missing parkour map metadata: %s" % must_have)
+            return protocol.on_map_change(self, map)
 
     return ParkourProtocol, ParkourConnection
