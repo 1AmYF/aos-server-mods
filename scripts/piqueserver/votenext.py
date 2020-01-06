@@ -45,7 +45,7 @@ def next(connection):
             connection.protocol.irc_say("%s voted for next map" % connection.name)
             if not connection.protocol.vote_successful:
                 msg = "%s voted to load the next map, if you agree type /next"
-                connection.protocol.send_chat(msg % connection.name)
+                connection.protocol.broadcast_chat(msg % connection.name)
     else:
         connection.send_chat("You have voted already.")
 

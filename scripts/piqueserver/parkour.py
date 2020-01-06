@@ -216,7 +216,7 @@ def apply_script(protocol, connection, config):
                                                              self.joinedtimestamp)
                     msg = "Congratulations, %s completed the parkour! Stats: %s mins, %s deaths"
                     completedmessage = msg % (self.name, displaytime, self.deathcount)
-                    self.protocol.send_chat(completedmessage)
+                    self.protocol.broadcast_chat(completedmessage)
                     self.protocol.irc_say(completedmessage)
                     if SAVE_HIGHSCORES.get():
                         save_highscore(self, self.name, displaytime,
@@ -237,7 +237,7 @@ def apply_script(protocol, connection, config):
                                                              self.joinedtimestamp)
                     msg = "%s ragequit after %s mins, %s deaths"
                     failmessage = msg % (self.name, displaytime, self.deathcount)
-                    self.protocol.send_chat(failmessage)
+                    self.protocol.broadcast_chat(failmessage)
                     self.protocol.irc_say(failmessage)
             connection.on_disconnect(self)
 

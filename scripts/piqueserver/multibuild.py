@@ -218,7 +218,7 @@ def build_block(connection, x, y, z, color):
     set_color = SetColor()
     set_color.value = make_color(*color)
     set_color.player_id = 32
-    connection.protocol.send_contained(set_color)
+    connection.protocol.broadcast_contained(set_color)
     block_action = BlockAction()
     block_action.player_id = 32
     block_action.x = x
@@ -226,7 +226,7 @@ def build_block(connection, x, y, z, color):
     block_action.z = z
     block_action.value = BUILD_BLOCK
     connection.protocol.map.set_point(x, y, z, color)
-    connection.protocol.send_contained(block_action, save=True)
+    connection.protocol.broadcast_contained(block_action, save=True)
 
 
 def destroy_block(connection, x, y, z):

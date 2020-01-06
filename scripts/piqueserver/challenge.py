@@ -142,8 +142,7 @@ def challenge(connection):
             if remaining < dur_mins:
                 connection.protocol.set_time_limit(dur_mins + 1)
         msg = "%s started the %s minutes challenge! To join type /challenge"
-
-        connection.protocol.send_chat(msg % (connection.name, dur_mins), irc=True)
+        connection.protocol.broadcast_chat(msg % (connection.name, dur_mins), irc=True)
         return "Get as many kills as possible during the next %s minutes!" % dur_mins
 
 
@@ -156,9 +155,9 @@ def apply_script(protocol, connection, config):
         def challenge_check(self):
             if self.challenge_remaining <= 1:
                 self.challenge_loop.stop()
-                self.protocol.send_chat("%s completed the challenge: %s kills in %s minutes"
-                                        % (self.name, self.challenge_kills, int(DURATION.get() / 60)),
-                                        irc=True)
+                self.protocol.broadcast_chat("%s completed the challenge: %s kills in %s minutes"
+                                             % (self.name, self.challenge_kills,
+                                                int(DURATION.get() / 60)), irc=True)
                 if SAVE_HIGHSCORES.get() and self.challenge_kills > 0:
                     save_highscores(self.name, self.challenge_kills,
                                     self.protocol.map_info.rot_info.name,

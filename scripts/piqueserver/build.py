@@ -91,7 +91,7 @@ def protect(connection, area=None):
         connection.protocol.protected_areas.symmetric_difference_update([area_coord])
         message = ("The area at %s is now %s" % (area.upper(), "protected" if area_coord in
                    connection.protocol.protected_areas else "unprotected"))
-        connection.protocol.send_chat(message)
+        connection.protocol.broadcast_chat(message)
 
 
 @command(admin_only=True)
@@ -108,14 +108,14 @@ def build(connection, player, area=None):
             raise ValueError()
         else:
             player.allowed_areas.clear()
-            connection.protocol.send_chat(player.name +
-                                          " can no longer build at protected areas")
+            connection.protocol.broadcast_chat(player.name +
+                                               " can no longer build at protected areas")
     else:
         area_coord = coordinates(area)
         player.allowed_areas.symmetric_difference_update([area_coord])
         message = ("%s can %s build at %s" % (player.name, "temporary"
                    if area_coord in player.allowed_areas else "no longer", area.upper()))
-        connection.protocol.send_chat(message)
+        connection.protocol.broadcast_chat(message)
 
 
 @command(admin_only=True)
