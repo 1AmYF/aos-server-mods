@@ -241,7 +241,7 @@ def destroy_block(connection, x, y, z):
             connection.protocol.map.remove_point(x, y, z)
         else:
             connection.protocol.map.destroy_point(x, y, z)
-        connection.protocol.send_contained(block_action, save=True)
+        connection.protocol.broadcast_contained(block_action, save=True)
 
 
 def get_direction(self):
