@@ -33,19 +33,24 @@ Commands:
     as long as the server runs and will be lost on a server restart.
 
     /protect <area>
-        Protect an area inside the public build region. Example: /protect B2
+        Protect an area inside the public build region. If no argument is given,
+        all protected areas will be listed. Example: /protect B2
+
     /build <#id> <area>
-        Give temporary build permission to a player for a protected area. If
-        no area is given, the permission will be for the whole map. Lasts until
-        the player disconnects or the command is repeated to revert the
+        Give temporary build permission to a player for a protected area. Lasts
+        until the player disconnects or the command is repeated to revert the
         permission. Example: /build #3 B2
+
     /buildpw <password> <area>
         Quick way of giving a player a password for a protected area, so he
         can continue building there when he joins again later. Repeat the command
-        to remove the password. Example: /buildpw secret B2
+        to remove the password. If no area is given, all areas for that password
+        will be listed. Example: /buildpw secret B2
+
     /allow <password>
         Using the password given with the /buildpw command to get permission
         for areas. Example: /allow secret
+
     /lockdown
         Freeze the map, nobody is able to build or login anymore, except the
         admin role. Repeat the command to revert it. Example: /lockdown
