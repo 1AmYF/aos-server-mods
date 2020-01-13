@@ -1,6 +1,7 @@
 name = 'Moving Platforms'
 version = '1.0'
 author = 'IAmYourFriend'
+description = ('A map to use with the parkour gamemode.')
 fog = (0, 148, 255)
 
 extensions = {

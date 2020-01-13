@@ -1,6 +1,7 @@
 name = 'Deuce Bros.'
 version = '1.0'
 author = 'IAmYourFriend'
+description = ('A map to use with the parkour gamemode.')
 
 extensions = {
     'water_damage' : 100,
