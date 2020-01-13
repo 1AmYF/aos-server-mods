@@ -1,0 +1,113 @@
+name = 'Moving Platforms'
+version = '1.0'
+author = 'IAmYourFriend'
+fog = (0, 148, 255)
+
+extensions = {
+    'water_damage' : 100,
+    'parkour_start' : (127, 256, 15),
+    'parkour_end' : (434, 256, 54),
+    'parkour_checkpoints' : ((225, 256, 56), (364, 256, 45))
+}
+
+# The following code creates the moving platforms.
+
+from pyspades.constants import *
+from pyspades.contained import BlockAction, SetColor
+from pyspades.common import make_color
+from twisted.internet.task import LoopingCall
+
+MOVE_SPEED_SECS = 1
+PLATFORM_BLOCKS_WIDTH = 2
+PLATFORM_BLOCK_COLOR = (255, 255, 255)
+
+# (start x, start y, start z, length, max distance x, current position x, directionflag)
+moving_platforms = [
+    [160, 256, 22, 10, 15, 0, False],
+    [181, 256, 35, 10, 14, 0, True],
+    [206, 256, 57, 12, 17, 0, False],
+
+    [266, 256, 40, 8, 9, 0, False],
+    [285, 256, 48, 10, 12, 0, True],
+    [306, 256, 55, 4, 6, 0, False],
+    [320, 256, 55, 4, 6, 0, True],
+    [333, 256, 53, 6, 8, 0, False],
+    [344, 256, 51, 4, 4, 0, True],
+    [356, 256, 49, 4, 4, 0, False],
+
+    [390, 256, 6, 2, 2, 0, True],
+    [412, 256, 57, 8, 10, 0, False]
+]
+
+
+def build_block(protocol, x, y, z, color):
+    set_color = SetColor()
+    set_color.value = make_color(*color)
+    set_color.player_id = 32
+    protocol.send_contained(set_color)
+    block_action = BlockAction()
+    block_action.player_id = 32
+    block_action.x = x
+    block_action.y = y
+    block_action.z = z
+    block_action.value = BUILD_BLOCK
+    protocol.map.set_point(x, y, z, color)
+    protocol.send_contained(block_action, save=True)
+
+
+def destroy_block(protocol, x, y, z):
+    if protocol.map.get_solid(x, y, z):
+        block_action = BlockAction()
+        block_action.player_id = 32
+        block_action.x = x
+        block_action.y = y
+        block_action.z = z
+        block_action.value = DESTROY_BLOCK
+        protocol.map.destroy_point(x, y, z)
+        protocol.send_contained(block_action, save=True)
+
+
+def build_platforms(protocol):
+    for plat in moving_platforms:
+        for length in range(0, plat[3]):
+            for width in range(0, PLATFORM_BLOCKS_WIDTH):
+                build_block(protocol, plat[0] + length,
+                            plat[1] + width, plat[2],
+                            PLATFORM_BLOCK_COLOR)
+        plat[5] = plat[0]
+
+
+def move_platforms(protocol):
+    if protocol.blue_team.count() < 1:
+        return
+    for plat in moving_platforms:
+        changeddirection = False
+        if plat[5] > plat[0] + plat[4] or plat[5] < plat[0] - plat[4]:
+            # change direction
+            plat[6] = not plat[6]
+            changeddirection = True
+        direction = 1
+        if plat[6]:
+            direction = -1
+        if changeddirection:
+            plat[5] = plat[5] + (direction * plat[3])
+            changeddirection = False
+        add_x = plat[5] + direction
+        remove_x = plat[5] - (direction * plat[3])
+        for width in range(0, PLATFORM_BLOCKS_WIDTH):
+            build_block(protocol, add_x, plat[1] + width, plat[2], PLATFORM_BLOCK_COLOR)
+            destroy_block(protocol, remove_x, plat[1] + width, plat[2])
+            plat[5] = add_x
+
+
+def on_map_change(self, map):
+    build_platforms(self)
+    if not hasattr(self, "moving_platforms_loop"):
+        self.moving_platforms_loop = LoopingCall(move_platforms, self)
+    if not self.moving_platforms_loop.running:
+        self.moving_platforms_loop.start(MOVE_SPEED_SECS)
+
+
+def on_map_leave(self):
+    if hasattr(self, "moving_platforms_loop"):
+        self.moving_platforms_loop.stop()
