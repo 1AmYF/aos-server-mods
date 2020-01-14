@@ -8,7 +8,7 @@ extensions = {
     'water_damage' : 100,
     'parkour_start' : (127, 256, 15),
     'parkour_end' : (434, 256, 54),
-    'parkour_checkpoints' : ((225, 256, 56), (364, 256, 45))
+    'parkour_checkpoints' : [(225, 256, 56), (364, 256, 45)]
 }
 
 # The following code creates the moving platforms.

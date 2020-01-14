@@ -16,7 +16,7 @@ Setup:
             'water_damage' : 100,
             'parkour_start' : (127, 256, 50),
             'parkour_end' : (382, 256, 50),
-            'parkour_checkpoints' : ((187, 256, 50), (240, 256, 39), (289, 256, 50))
+            'parkour_checkpoints' : [(187, 256, 50), (240, 256, 39), (289, 256, 50)]
         }
 
     'parkour_start' marks the coordinate for spawn, 'parkour_end' for the base
