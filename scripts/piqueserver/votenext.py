@@ -34,16 +34,16 @@ MIN_MAP_UPTIME = VOTENEXT_CONFIG.option("min_map_uptime", default="1min", cast=c
 
 @command()
 def next(connection):
-    if not connection.voted:
+    if not connection.voted_next:
         if not allow_votes(connection.protocol):
             msg = "Please wait %s seconds before requesting the next map."
             connection.send_chat(msg % (connection.protocol.mapstarttime +
                                         MIN_MAP_UPTIME.get() - get_now_in_secs()))
         else:
-            connection.voted = True
+            connection.voted_next = True
             check_for_map_change(connection.protocol)
             connection.protocol.irc_say("%s voted for next map" % connection.name)
-            if not connection.protocol.vote_successful:
+            if not connection.protocol.vote_next_successful:
                 msg = "%s voted to load the next map, if you agree type /next"
                 connection.protocol.broadcast_chat(msg % connection.name)
     else:
@@ -51,7 +51,7 @@ def next(connection):
 
 
 def allow_votes(protocol):
-    if protocol.mapstarttime is not None and not protocol.vote_successful:
+    if protocol.mapstarttime is not None and not protocol.vote_next_successful:
         return (protocol.mapstarttime + MIN_MAP_UPTIME.get()) < get_now_in_secs()
     else:
         return False
@@ -62,10 +62,10 @@ def get_now_in_secs():
 
 
 def reset_player_votes(protocol):
-    protocol.vote_successful = False
+    protocol.vote_next_successful = False
     if protocol.players is not None and len(protocol.players) > 0:
         for p in protocol.players.values():
-            p.voted = False
+            p.voted_next = False
 
 
 def is_bot(connection):
@@ -85,17 +85,17 @@ def check_for_map_change(protocol, ignore_player_id=None):
                 ignore_player = True
             if not ignore_player:
                 valid_voters += 1
-                if p.voted:
+                if p.voted_next:
                     valid_votes += 1
         if valid_voters > 0 and valid_votes >= VOTE_PERCENTAGE.get() * valid_voters / float(100):
-            protocol.vote_successful = True
+            protocol.vote_next_successful = True
             protocol.advance_rotation("Vote successful.")
 
 
 def apply_script(protocol, connection, config):
     class VoteNextProtocol(protocol):
         mapstarttime = None
-        vote_successful = False
+        vote_next_successful = False
 
         def on_map_change(self, map):
             reset_player_votes(self)
@@ -103,7 +103,7 @@ def apply_script(protocol, connection, config):
             protocol.on_map_change(self, map)
 
     class VoteNextConnection(connection):
-        voted = False
+        voted_next = False
 
         def on_disconnect(self):
             if not is_bot(self):
