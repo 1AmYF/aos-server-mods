@@ -198,13 +198,6 @@ def apply_script(protocol, connection, config):
                                        self.deathcount, self.address[0])
             return connection.on_refill(self)
 
-        def on_connect(self):
-            self.protocol.green_team.locked = True
-            self.protocol.balanced_teams = 0
-            self.protocol.building = False
-            self.protocol.fall_damage = False
-            return connection.on_connect(self)
-
         def on_disconnect(self):
             if self.team is self.protocol.blue_team and not self.completedparkour:
                 if self.joinedtimestamp is not None:
@@ -232,6 +225,10 @@ def apply_script(protocol, connection, config):
             for must_have in ("parkour_start", "parkour_end"):
                 if must_have not in extensions:
                     raise Exception("Missing parkour map metadata: %s" % must_have)
+            self.green_team.locked = True
+            self.balanced_teams = 0
+            self.building = False
+            self.fall_damage = False
             return protocol.on_map_change(self, map)
 
     return ParkourProtocol, ParkourConnection

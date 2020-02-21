@@ -235,9 +235,6 @@ def apply_script(protocol, connection, config):
 
         def on_connect(self):
             self.allowed_areas = set()
-            self.protocol.green_team.locked = True
-            self.protocol.balanced_teams = 0
-            self.protocol.fall_damage = False
             self.killing = False
             self.god = True
             return connection.on_connect(self)
@@ -288,6 +285,9 @@ def apply_script(protocol, connection, config):
 
         def on_map_change(self, map):
             self.public_build_area = self.map_info.extensions.get("public_build_area")
+            self.green_team.locked = True
+            self.balanced_teams = 0
+            self.fall_damage = False
             return protocol.on_map_change(self, map)
 
     return BuildModeProtocol, BuildModeConnection
