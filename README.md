@@ -1,5 +1,6 @@
 # aos-server-mods
-Some mods for the server (Pyspades or Piqueserver) of the game *Ace of Spades Classic*. [:arrow_down_small: Download](https://github.com/1AmYF/aos-server-mods/archive/master.zip)
+Some mods for the server (Pyspades or Piqueserver) of the game *Ace of Spades Classic*.  
+[:arrow_down_small: Download](https://github.com/1AmYF/aos-server-mods/archive/master.zip)
 
 
 ## maps
