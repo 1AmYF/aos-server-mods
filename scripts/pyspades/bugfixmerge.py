@@ -41,6 +41,13 @@ def apply_script(protocol, connection, config):
                     return False
             return value
 
+        def on_hit(self, hit_amount, hit_player, type, grenade):
+            if self.hp is not None and self.world_object is not None:
+                if type == WEAPON_KILL or type == HEADSHOT_KILL:
+                    if self.protocol.map.get_solid(*self.world_object.position.get()):
+                        return False
+            return connection.on_hit(self, hit_amount, hit_player, type, grenade)
+
         def drop_flag(self):
             protocol = self.protocol
             game_mode = protocol.game_mode
