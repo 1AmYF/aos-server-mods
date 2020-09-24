@@ -1,0 +1,16 @@
+name = 'Sea Life'
+version = '1.0'
+author = 'Builders on *Sauerkraut'
+description = ('This map is for the push gamemode. Visit http://sauerkraut.bplaced.net for more information.')
+
+extensions = {
+'push': True,
+'push_spawn_range' : 16,
+'push_blue_spawn' : (198, 478, 1),
+'push_blue_cp' : (262, 56, 1),
+'push_blue_build_area' : (140, 6, 239, 511),
+'push_green_spawn' : (313, 478, 1),
+'push_green_cp' : (249, 56, 1),
+'push_green_build_area' : (272, 6, 371, 511),
+'water_damage' : 100
+}
