@@ -1,7 +1,7 @@
 name = 'Drift Ice 2'
 version = '1.0'
 author = 'IAmYourFriend'
-fog = (0, 60, 100)
+#fog = (0, 60, 100)
 
 #extensions = { 
 #'boundary_damage' : {'left' : 64, 'right' : 448, 'top' : 153, 'bottom' : 342, 'damage': 1}
