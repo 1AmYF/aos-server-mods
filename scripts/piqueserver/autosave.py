@@ -1,18 +1,11 @@
 """
-About
-^^^^^
+autosave.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
+Automatically creates backups of the current map in a given
+interval and also removes older saves. Saving will be skipped
+if nobody was on the server during the interval.
 
-**autosave.py** is intended for build servers. Automatically creates
-backups of the current map in a given interval and also removes older
-saves. Saving will be skipped if nobody was on the server during the
-interval.
-
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [autosave]
     # Interval to save the map.
@@ -30,12 +23,11 @@ Options
     # Date format for the map filename.
     date_format = "%Y%m%d-%H%M"
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/autosave`` Toogle the feature
-* ``/save`` Manually save the map
-* ``/recentsaves`` Show the last 5 saves
+    Command /autosave toggles the feature.
+    Command /save will save the map manually.
+    Command /recentsaves shows the last 5 saves.
 """
 
 import os

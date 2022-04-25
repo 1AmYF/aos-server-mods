@@ -1,40 +1,33 @@
 """
-About
-^^^^^
+weaponcontrol.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
+weaponcontrol.py allows to disable weapons (Spade, Rifle, SMG, Shotgun
+and/or Grenades). They can be disabled globally or individually for
+maps (map will overrule server setting).
 
-**weaponcontrol.py** allows to disable weapons (Spade, Rifle, SMG,
-Shotgun and/or Grenades). They can be disabled globally or individually
-for maps (map will overrule server setting).
+Setup:
 
-Setup
-^^^^^
+    For global settings, add this to your server config:
 
-For global settings, add this to your server config:
+        [weapons]
+        spade = true
+        rifle = true
+        smg = true
+        shotgun = true
+        grenades = true
 
-.. code-block:: python
+    Set those that you want to disable to false.
+    For individual map settings, add them to the map txt metadata:
 
-    [weapons]
-    spade = true
-    rifle = true
-    smg = true
-    shotgun = true
-    grenades = true
-
-
-Set those that you want to disable to false.
-For individual map settings, add them to the map txt metadata:
-
->>> extensions = {
-...     'weapons' : {
-...         'spade' : True,
-...         'rifle' : True,
-...         'smg' : True,
-...         'shotgun' : True,
-...         'grenades' : True
-...     }
-... }
+        extensions = {
+            'weapons' : {
+                'spade' : True,
+                'rifle' : True,
+                'smg' : True,
+                'shotgun' : True,
+                'grenades' : True
+            }
+        }
 
 A disabled weapon can not be selected on join or by weapon change (on
 join, the player will automatically receive an available weapon instead).

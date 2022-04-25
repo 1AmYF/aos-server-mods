@@ -1,10 +1,7 @@
 """
-About
-^^^^^
+multibuild.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
-
-**multibuild.py** is an ingame mapping tool. It allows building at
+multibuild.py is an ingame mapping tool. It allows building at
 multiple locations simultaneously, or using shapes (prefabs or
 self-built shapes).
 
@@ -12,47 +9,46 @@ Short videos showcasing the feature:
   https://twitter.com/1AmYF/status/1078610014867202048
   https://twitter.com/1AmYF/status/1136228253977448448
 
-Usage Example
-^^^^^^^^^^^^^
+Usage example:
 
-Step 1:
-  Type /mbreg and start "registering" your starting blocks.
-  Place blocks everywhere where you want your building to appear
-  (If you want to build with a prefab shape instead, choose one
-  using the /mbshape command).
+    Step 1:
+      Type /mbreg and start "registering" your starting blocks.
+      Place blocks everywhere where you want your building to appear
+      (If you want to build with a prefab shape instead, choose one
+      using the /mbshape command).
 
-Step 2:
-  Type /mb to start multibuilding. Then place blocks, linebuild or
-  destroy blocks at the last starting block you placed during step 1.
+    Step 2:
+      Type /mb to start multibuilding. Then place blocks, linebuild
+      or destroy blocks at the last starting block you placed during
+      step 1.
 
-You can toggle /mbreg or /mb all the time if you want to pause the
-feature and build normal again.
+    You can toggle /mbreg or /mb all the time if you want to pause
+    the feature and build normal again.
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/mbreg``
-    Register your starting blocks.
+    /mbreg
+        Register your starting blocks.
 
-* ``/mb``
-    Start multibuilding.
+    /mb
+        Start multibuilding.
 
-* ``/mbmirror <1 2>``
-    Mirror your multibuild, reversing (1) or non-reversing (2). Mind
-    your orientation (= in which direction you look) during /mbreg
-    as your multibuild will be mirrored accordingly.
+    /mbmirror <1 2>
+        Mirror your multibuild, reversing (1) or non-reversing (2).
+        Mind your orientation (= in which direction you look) during
+        /mbreg as your multibuild will be mirrored accordingly.
 
-* ``/mbshape <ball box diamond land pyramid>``
-    Load a prefab shape instead of building your own during /mbreg.
-    Your last starting block will be on the top middle of the shape
-    (optionally adjust starting z by adding a number as argument).
+    /mbshape <ball box diamond land pyramid>
+        Load a prefab shape instead of building your own during /mbreg.
+        Your last starting block will be on the top middle of the shape
+        (optionally adjust starting z by adding a number as argument).
 
-* ``/mbground``
-    Don't build or destroy on ground level during /mb (optionally
-    add a custom z for the protection height as argument).
+    /mbground
+        Don't build or destroy on ground level during /mb (optionally
+        add a custom z for the protection height as argument).
 
-* ``/mbhelp``
-    List all multibuild commands.
+    /mbhelp
+        List all multibuild commands.
 """
 
 from pyspades.constants import *

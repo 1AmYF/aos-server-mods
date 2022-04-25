@@ -1,10 +1,7 @@
 """
-About
-^^^^^
+buildersapper.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
-
-**buildersapper.py** enables two class modes for players to choose from:
+buildersapper.py enables two class modes for players to choose from:
     - Builder: refills after placing the last block, heal teammates with
       spade, grenades build a structure.
     - Sapper: ammo refills, reduced body damage, deadly grenades.
@@ -13,10 +10,7 @@ On first join a random mode is assigned. Modes can be switched with commands.
 Use server settings to change how many refills a player can have.
 Originally written to use with build-focused gamemodes like Babel or Push.
 
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [buildersapper]
     # Maximum amount of refills the builder mode can have.
@@ -25,17 +19,14 @@ Options
     # Maximum amount of ammo refills the sapper mode can have.
     ammo_refills = 1
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/builder``
-    Choose the builder mode.
-
-* ``/sapper``
-    Choose the sapper mode.
-
-* ``/mode``
-    Show information about the modes.
+    /builder
+        Choose the builder mode.
+    /sapper
+        Choose the sapper mode.
+    /mode
+        Show information about the modes.
 """
 
 from pyspades.constants import *

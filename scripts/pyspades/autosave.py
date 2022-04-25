@@ -1,13 +1,15 @@
 """
 autosave.py by IAmYourFriend https://twitter.com/1AmYF
 
-Intended for build servers. Automatically creates backups of the
-current map in a given interval and also removes older saves. Saving
-will be skipped if nobody was on the server during the interval.
+Automatically creates backups of the current map in a given
+interval and also removes older saves. Saving will be skipped
+if nobody was on the server during the interval.
 
-Command /autosave toggles the feature.
-Command /save will save the map manually.
-Command /recentsaves shows the last 5 saves.
+Commands:
+
+    Command /autosave toggles the feature.
+    Command /save will save the map manually.
+    Command /recentsaves shows the last 5 saves.
 """
 
 import os

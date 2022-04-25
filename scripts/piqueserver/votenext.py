@@ -1,18 +1,12 @@
 """
-About
-^^^^^
+votenext.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
-
-**votenext.py** is a simple way for players to vote for loading the next map in
+votenext.py is a simple way for players to vote for loading the next map in
 the rotation by only typing /next. Unlike votekick or votemap, the votes will be
 remembered and the progress will be checked again everytime someone types /next
 or disconnects from the server.
 
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [votenext]
     # Percentage of votes necessary for the next map to load

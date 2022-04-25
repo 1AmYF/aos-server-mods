@@ -1,49 +1,36 @@
 """
-.. codeauthor:: danhezee, StackOverflow, izzy, Danke, noway421, IAmYourFriend
+push.py last modified 2019-03-06
+Contributors: danhezee, StackOverflow, izzy, Danke, noway421, IAmYourFriend
 
-The concept
-^^^^^^^^^^^
+The concept:
+    Each team spawns at a set location with the enemy intel. They must "push"
+    the intel towards their control point, which is also at a set location.
+    The only way to arrive there is by building bridges over the deadly water.
+    Further introduction to the game mode: https://youtu.be/DdisPY6vDD0
 
-Each team spawns at a set location with the enemy intel. They must "push"
-the intel towards their control point, which is also at a set location.
-The only way to arrive there is by building bridges over the deadly water.
-Further introduction to the game mode: https://youtu.be/DdisPY6vDD0
+How to setup new maps:
+    Spawn and CP locations must be configured via extensions in the map's
+    map_name.txt metadata. Example:
 
+    extensions = {
+        'push': True,
+        'push_spawn_range' : 5,
+        'push_blue_spawn' : (91, 276, 59),
+        'push_blue_cp' : (91, 276, 59),
+        'push_green_spawn' : (78, 86, 59),
+        'push_green_cp' : (78, 86, 59),
+        'water_damage' : 100
+    }
 
-Setting Up New Maps
-^^^^^^^^^^^^^^^^^^^
+    Additional (but optional) extensions, to mark each team's build area and
+    prevent the enemy from building there (and thereby helping the enemy).
+    The build area is defined by x and y of upper left corner, followed by x
+    and y of bottom right corner on the map. Example:
 
-Spawn and CP locations must be configured via extensions in the map's
-map_name.txt metadata:
+        'push_blue_build_area' : (64, 100, 243, 500),
+        'push_green_build_area' : (268, 100, 447, 500),
 
->>> extensions = {
-...     'push': True,
-...     'push_spawn_range' : 5,
-...     'push_blue_spawn' : (91, 276, 59),
-...     'push_blue_cp' : (91, 276, 59),
-...     'push_green_spawn' : (78, 86, 59),
-...     'push_green_cp' : (78, 86, 59),
-...     'water_damage' : 100
-... }
-
-Additional (but optional) extensions, to mark each team's build area and prevent
-the enemy from building there (and thereby helping the enemy). The build area
-is defined by x and y of upper left corner, followed by x and y of bottom right
-corner on the map::
-
-    'push_blue_build_area' : (64, 100, 243, 500),
-    'push_green_build_area' : (268, 100, 447, 500),
-
-Commands
-^^^^^^^^
-
-* ``/r`` Quickly respawn to refill blocks and ammo (if enabled)
-* ``/resetintel <team>`` Manually reset the blue or green team's intel
-
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [push]
     # Disallow removal of map blocks. This allows a larger variety of maps that
@@ -75,6 +62,12 @@ Options
 
     # Disable grenade damage within enemy spawn.
     disable_grenades_at_spawn = false
+
+Commands:
+    /r
+        Quickly respawn to refill blocks and ammo (if enabled)
+    /resetintel <team>
+        Manually reset the blue or green team's intel
 """
 
 from pyspades.constants import *

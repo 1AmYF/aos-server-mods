@@ -1,5 +1,7 @@
-# Prevents bullets from destroying blocks beyond fog range.
-# Recommended to use especially in gamemodes like Push or Babel.
+"""
+Prevents bullets from destroying blocks beyond fog range.
+Recommended to use especially in gamemodes like Push or Babel.
+"""
 
 from pyspades.constants import WEAPON_TOOL
 from pyspades.collision import distance_3d_vector

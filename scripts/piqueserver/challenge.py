@@ -1,17 +1,11 @@
 """
-About
-^^^^^
-
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
+challenge.py by IAmYourFriend https://twitter.com/1AmYF
 
 See how many kills you can get in 5 minutes. With highscores. Originally
 written for the target practice server with bots, based on an idea by F176.
 If a map timelimit is set, it will be extended for the challenge duration.
 
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [challenge]
     # Set the duration of a challenge.
@@ -30,11 +24,10 @@ Options
     # How many of the top scores to show when using the /highscore command.
     show_scores = 10
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/challenge`` Start the timer (use command again to abort)
-* ``/highscore`` Show the top scores (if enabled)
+    Command /challenge starts the timer (use command again to abort).
+    Command /highscore shows the top scores (if enabled).
 """
 
 from pyspades.constants import *

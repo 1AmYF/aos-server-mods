@@ -1,37 +1,30 @@
 """
-About
-^^^^^
+parkour.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
-
-**parkour.py** is a parkour gamemode with highscores. Players spawn on the same
+parkour.py is a parkour gamemode with highscores. Players spawn on the same
 team at the same location and have to make it to their base to complete the
 parkour. Example: https://youtu.be/CIvmWNBpfi8
 
-Setup
-^^^^^
+Setup:
 
-Set game_mode in your server config to "parkour" and add parkour maps to the
-rotation.
+    Set game_mode in your server config to "parkour" and add parkour maps to the
+    rotation.
 
-To create a new parkour map, map txt metadata is required. Example:
+    To create a new parkour map, map txt metadata is required. Example:
 
->>> extensions = {
-...     'water_damage' : 100,
-...     'parkour_start' : (127, 256, 50),
-...     'parkour_end' : (382, 256, 50),
-...     'parkour_checkpoints' : [(187, 256, 50), (240, 256, 39), (289, 256, 50)]
-... }
+        extensions = {
+            'water_damage' : 100,
+            'parkour_start' : (127, 256, 50),
+            'parkour_end' : (382, 256, 50),
+            'parkour_checkpoints' : [(187, 256, 50), (240, 256, 39), (289, 256, 50)]
+        }
 
-'parkour_start' marks the coordinate for spawn, 'parkour_end' for the base
-location. 'parkour_checkpoints' is optional. If used, and a player dies during
-the parkour, he will respawn at the closest checkpoint coordinate behind him
-(the parkour direction needs to be from left to right on the map view).
+    'parkour_start' marks the coordinate for spawn, 'parkour_end' for the base
+    location. 'parkour_checkpoints' is optional. If used, and a player dies during
+    the parkour, he will respawn at the closest checkpoint coordinate behind him
+    (the parkour direction needs to be from left to right on the map view).
 
-Options
-^^^^^^^
-
-.. code-block:: python
+Config Options:
 
     [parkour]
     # Every parkour completion will be saved into a csv file and the top scores will
@@ -42,13 +35,12 @@ Options
     # How many of the top scores to show when using the /highscore command.
     show_scores = 10
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/highscore``
-    List the top highscores (if enabled).
-* ``/reset``
-    Reset your time/score and retry the parkour from start.
+    /highscore
+        List the top highscores (if enabled).
+    /reset
+        Reset your time/score and retry the parkour from start.
 """
 
 import time

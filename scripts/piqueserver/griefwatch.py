@@ -1,11 +1,8 @@
 """
-About
-^^^^^
+griefwatch.py by IAmYourFriend https://twitter.com/1AmYF
 
-.. codeauthor:: IAmYourFriend https://twitter.com/1AmYF
-
-**griefwatch.py** reports warnings on suspected grief activity. The warning
-will be sent to IRC, written into the log file and also sent ingame to players
+griefwatch.py reports warnings on suspected grief activity. The warning will
+be sent to IRC, written into the log file and also sent ingame to players
 with a staff role. Two commands allow tracking of block activity.
 
 The warnings depend on the gamemode:
@@ -18,23 +15,20 @@ Block removal warnings are triggered when removing lots of blocks in a short
 time. Note that a warning alone is no proof that the player was really
 griefing.
 
-Setup
-^^^^^
+Setup:
 
-It is important to put this script **BEFORE** blockinfo in the config script
-list. It will not work otherwise.
+    It is important to put this script *BEFORE* blockinfo in the config script
+    list. It will not work otherwise.
 
-Commands
-^^^^^^^^
+Commands:
 
-* ``/inspect``
-    Show coordinates of a block, it's color values and who placed it.
-
-* ``/blocklog``
-    Every block removal will be logged into a file (intended only for
-    temporary use). Find it as block_removal.log in the log folder.
-    Columns in the log file:
-    name, id, team, tool, weapon, position, blockposition, distance, ip, time
+    /inspect
+        Show coordinates of a block, it's color values and who placed it.
+    /blocklog
+        Every block removal will be logged into a file (intended only for
+        temporary use). Find it as block_removal.log in the log folder.
+        Columns in the log file:
+        name, id, team, tool, weapon, position, blockposition, distance, ip, time
 """
 
 from pyspades.constants import *
