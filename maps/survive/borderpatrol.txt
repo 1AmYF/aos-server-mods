@@ -1,0 +1,9 @@
+name = 'Border Patrol'
+version = '1.0'
+author = '*Sauerkraut Maps'
+description = ('This map is for the survive gamemode. Visit http://sauerkraut.bplaced.net for more information.')
+
+extensions = {
+    'base_locations' : [(63, 255, 58), (127, 255, 58), (191, 255, 58), (255, 255, 58),
+                        (319, 255, 58), (383, 255, 58), (447, 255, 58)]
+}

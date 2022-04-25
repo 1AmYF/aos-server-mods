@@ -1,0 +1,9 @@
+name = 'Pyramid Town'
+version = '1.0'
+author = '*Sauerkraut Maps'
+description = ('This map is for the survive gamemode. Visit http://sauerkraut.bplaced.net for more information.')
+
+extensions = {
+    'base_locations' : [(156, 128), (219, 219), (307, 207),
+                        (291, 291), (233, 293)]
+}

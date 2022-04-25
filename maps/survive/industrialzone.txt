@@ -1,0 +1,9 @@
+name = 'Industrial Zone'
+version = '1.0'
+author = '*Sauerkraut Maps'
+description = ('This map is for the survive gamemode. Visit http://sauerkraut.bplaced.net for more information.')
+
+extensions = {
+    'base_locations' : [(88, 238), (257, 359), (260, 146),
+                        (400, 274), (256, 256)]
+}
