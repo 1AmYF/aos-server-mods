@@ -1,5 +1,5 @@
 """
-challenge.py by IAmYourFriend https://twitter.com/1AmYF
+challenge.py by IAmYourFriend https://github.com/1AmYF
 
 See how many kills you can get in 5 minutes. With highscores. Originally
 written for the target practice server with bots, based on an idea by F176.

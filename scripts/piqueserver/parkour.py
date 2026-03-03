@@ -1,5 +1,5 @@
 """
-parkour.py by IAmYourFriend https://twitter.com/1AmYF
+parkour.py by IAmYourFriend https://github.com/1AmYF
 
 parkour.py is a parkour gamemode with highscores. Players spawn on the same
 team at the same location and have to make it to their base to complete the

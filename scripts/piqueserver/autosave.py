@@ -1,5 +1,5 @@
 """
-autosave.py by IAmYourFriend https://twitter.com/1AmYF
+autosave.py by IAmYourFriend https://github.com/1AmYF
 
 Automatically creates backups of the current map in a given
 interval and also removes older saves. Saving will be skipped

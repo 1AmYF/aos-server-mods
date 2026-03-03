@@ -2,7 +2,7 @@
 Survive is a gamemode where players have to fight off waves of zombie bots.
 
 The code is based on basicbot.py by hompy, was developed by Beige (Laon) into this
-gamemode, then revised and extended by IAmYourFriend https://twitter.com/1AmYF
+gamemode, then revised and extended by IAmYourFriend https://github.com/1AmYF
 
 Setup:
 

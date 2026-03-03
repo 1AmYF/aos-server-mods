@@ -1,7 +1,7 @@
 name = 'Sea Life'
 version = '1.0'
 author = 'Builders on *Sauerkraut'
-description = ('This map is for the push gamemode. Visit http://sauerkraut.bplaced.net for more information.')
+description = ('This map is for the push gamemode.')
 
 extensions = {
 'push': True,

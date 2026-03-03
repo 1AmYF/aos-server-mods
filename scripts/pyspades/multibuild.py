@@ -1,5 +1,5 @@
 """
-multibuild.py by IAmYourFriend https://twitter.com/1AmYF
+multibuild.py by IAmYourFriend https://github.com/1AmYF
 
 multibuild.py is an ingame mapping tool. It allows building at
 multiple locations simultaneously, or using shapes (prefabs or

@@ -1,7 +1,6 @@
 name = 'Beach Resort'
 version = '1.0'
 author = 'Builders on *Sauerkraut'
-description = ('Visit http://sauerkraut.bplaced.net for more information.')
 
 # Enable this to prevent players from going too far out into the water
 #extensions = {

@@ -1,5 +1,5 @@
 """
-griefwatch.py by IAmYourFriend https://twitter.com/1AmYF
+griefwatch.py by IAmYourFriend https://github.com/1AmYF
 
 griefwatch.py reports warnings on suspected grief activity. The warning will
 be sent to IRC, written into the log file and also sent ingame to players

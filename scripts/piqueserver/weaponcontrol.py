@@ -1,5 +1,5 @@
 """
-weaponcontrol.py by IAmYourFriend https://twitter.com/1AmYF
+weaponcontrol.py by IAmYourFriend https://github.com/1AmYF
 
 weaponcontrol.py allows to disable weapons (Spade, Rifle, SMG, Shotgun
 and/or Grenades). They can be disabled globally or individually for

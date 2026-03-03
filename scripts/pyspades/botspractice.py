@@ -1,5 +1,5 @@
 """
-botspractice.py by IAmYourFriend https://twitter.com/1AmYF
+botspractice.py by IAmYourFriend https://github.com/1AmYF
 
 botspractice.py is a gamemode for target practice with bots. The bots will walk
 around randomly in a fixed area surrounded by bases where players can refill

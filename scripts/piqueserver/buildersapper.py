@@ -1,5 +1,5 @@
 """
-buildersapper.py by IAmYourFriend https://twitter.com/1AmYF
+buildersapper.py by IAmYourFriend https://github.com/1AmYF
 
 buildersapper.py enables two class modes for players to choose from:
     - Builder: refills after placing the last block, heal teammates with

@@ -1,4 +1,3 @@
 name = 'Whatever'
 version = '1.0'
 author = 'Builders on *Sauerkraut'
-description = ('Visit http://sauerkraut.bplaced.net for more information.')

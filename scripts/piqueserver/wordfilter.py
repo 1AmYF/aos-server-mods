@@ -1,5 +1,5 @@
 """
-wordfilter.py by IAmYourFriend https://twitter.com/1AmYF
+wordfilter.py by IAmYourFriend https://github.com/1AmYF
 
 Handles swear words in chat, pm, playernames and votekick reasons and
 also adds a cooldown to pms.
