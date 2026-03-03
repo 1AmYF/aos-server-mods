@@ -1,0 +1,14 @@
+name = 'Level 8'
+version = '1.0'
+author = 'IAmYourFriend'
+description = ('A map to use with the botstc (Shoot Em Up) gamemode.')
+fog = (200, 25, 25)
+
+extensions = {
+    'blue_spawn' : (260, 429),
+    'bots_spawn' : [(227, 128, 18), (240, 128, 18), (253, 122, 18),
+                    (266, 122, 18), (281, 128, 18), (294, 128, 18)],
+    'bots_spawn_range' : 0,
+    'base_locations' : [(260, 154), (257, 272), (195, 200), (318, 200),
+                        (183, 330), (332, 330), (260, 316), (260, 402)]
+}
