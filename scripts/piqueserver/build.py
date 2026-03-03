@@ -1,5 +1,5 @@
 """
-build.py by IAmYourFriend https://twitter.com/1AmYF
+build.py by IAmYourFriend https://github.com/1AmYF
 
 build.py is a simple gamemode for building. Killing is disabled and only
 players with a login are able to build.

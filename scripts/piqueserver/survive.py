@@ -2,7 +2,7 @@
 Survive is a gamemode where players have to fight off waves of zombie bots.
 
 The code is based on basicbot.py by hompy, was developed by Beige (Laon) into this
-gamemode, then revised and extended by IAmYourFriend https://twitter.com/1AmYF
+gamemode, then revised and extended by IAmYourFriend https://github.com/1AmYF
 
 Setup:
 
@@ -530,7 +530,7 @@ def apply_script(protocol, connection, config):
             for player in self.team.other.get_players():
                 if (player.world_object) and (not player.world_object.dead):
                     if ((vector_collision(pos, player.world_object.position, 3)) and
-                            (obj.validate_hit(player.world_object, MELEE, 5))):
+                            (obj.validate_hit(player.world_object, MELEE, 5, 5))):
                         hit_amount = BOT_ATTACK_DAMAGE
                         type = MELEE_KILL
                         self.on_hit(hit_amount, player, type, None)
